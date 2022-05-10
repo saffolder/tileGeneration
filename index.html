@@ -74,7 +74,7 @@
             margin-left: 20px;
             font-family: 'Open Sans', sans-serif;
             font-size: 25pt;
-            color: white
+            color: white;
         }
 
         #subtitle {
@@ -85,7 +85,7 @@
             margin-left: 190px;
             font-family: 'Open Sans', sans-serif;
             font-size: 15pt;
-            color: white
+            color: white;
         }
     </style>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
@@ -95,10 +95,11 @@
     <nav id="menu"></nav>
     <div id='map'></div>
     <div id="title">
-     Seattle
+      Seattle
     </div>
     <div id="subtitle">
     </div>
+
     <script type="text/javascript">
         mapboxgl.accessToken =
             'pk.eyJ1Ijoic2FtYWZmb2xkZXIiLCJhIjoiY2wyam9oZmhrMDZhMzNlbzN5MmludTR1aiJ9.vhUMvam1aTt6ygnJsYLpiQ';
@@ -222,6 +223,9 @@
                     // see the preventDefault() method.
                     e.stopPropagation();
 
+                    title, subtitle = getLayer(clickedLayer);
+                    document.getElementById('title').textContent = title;
+                    document.getElementById('subtitle').textContent = subtitle;
                     const visibility = map.getLayoutProperty(
                         clickedLayer,
                         'visibility'
@@ -241,6 +245,27 @@
                         );
                     }
                 };
+
+                function getLayer(id) {
+                  title, subtitle = '';
+                  if (id === 'basemap') {
+                    title = 'Sunny Seattle';
+                    subtitle = 'A golden basemap of Seattle since we could use some more sunshine.';
+                  } else if (id === 'thematic'){
+                    title = 'Seattle Code Complaints';
+                    subtitle = 'All code compliance complaints and violations that SDCI is reviewing and processing.';
+                  } else if (id === 'combo') {
+                    title = 'Sunny Seattle with Code Complaints';
+                    subtitle = 'All code compliance complaints and violations that SDCI is reviewing and processing.';
+                  } else if (id === 'custom') {
+                    title = 'Just Seattle Trails';
+                    subtitle = 'This map has everything removed besides the trails, in red, to show the interconnecting trail system of an area.';
+                  } else {
+                    title = 'Seattle';
+                    subtitle = 'Click on a button to switch maps.'
+                  }
+                  return title, subtitle;
+                }
 
                 // in the menu place holder, insert the layer links.
                 const layers = document.getElementById('menu');
